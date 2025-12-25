@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ffcce6 0%, #ff99cc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .rain-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .raindrop {
+            position: absolute;
+            font-size: 24px;
+            opacity: 0;
+            animation-name: fall;
+            animation-timing-function: linear;
+            animation-iteration-count: 1;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-50px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        p {
+            position: absolute;
+            font-size: 5rem;
+            font-weight: bold;
+            color: #ff3399;
+            text-shadow: 3px 3px 0 #ffcc00,
+                         6px 6px 15px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            text-align: center;
+            z-index: 2;
+        }
+
+        #wait {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .fade-out {
+            opacity: 0 !important;
+            transform: scale(0.5) !important;
+        }
+
+        .fade-in {
+            opacity: 1 !important;
+            transform: scale(1) !important;
+        }
+
+        .pulse {
+            animation: pulse 0.8s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .bounce {
+            animation: bounce 0.8s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="rain-container" id="rain"></div>
+
+    <p id="wait">wait wait</p>
+    <p id="hep" style="display:none;">hep hep?</p>
+    <p id="hura" style="display:none;">horaaayy 🎉</p>
+
+    <script>
+        const emojis = ['🎉', '✨', '🎊', '🥳', '🎂', '🎁', '❤️', '💖'];
+        const rainContainer = document.getElementById('rain');
+        
+        function createRaindrop() {
+            const drop = document.createElement('div');
+            drop.className = 'raindrop';
+            drop.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            
+            drop.style.left = Math.random() * 100 + 'vw';
+            drop.style.fontSize = (Math.random() * 30 + 20) + 'px';
+            
+            const duration = Math.random() * 3 + 2;
+            drop.style.animationDuration = duration + 's';
+            
+            const delay = Math.random() * 2;
+            drop.style.animationDelay = delay + 's';
+            
+            rainContainer.appendChild(drop);
+            
+            setTimeout(() => {
+                drop.remove();
+            }, (duration + delay) * 1000);
+        }
+        
+        setInterval(createRaindrop, 100);
+
+        // 2s: remove "wait wait", show "hep hep?"
+        setTimeout(() => {
+            const wait = document.getElementById("wait");
+            const hep = document.getElementById("hep");
+            
+            wait.classList.add('fade-out');
+            
+            setTimeout(() => {
+                wait.style.display = "none";
+                hep.style.display = "block";
+                setTimeout(() => {
+                    hep.classList.add('fade-in');
+                    hep.classList.add('pulse');
+                }, 10);
+            }, 500);
+            
+        }, 2000);
+
+        // 4s: hide "hep hep?" and show "horaaayy"
+        setTimeout(() => {
+            const hep = document.getElementById("hep");
+            const hura = document.getElementById("hura");
+            
+            hep.classList.remove('pulse');
+            hep.classList.add('fade-out');
+            
+            setTimeout(() => {
+                hep.style.display = "none";
+                hura.style.display = "block";
+                setTimeout(() => {
+                    hura.classList.add('fade-in');
+                    hura.classList.add('bounce');
+                }, 10);
+            }, 500);
+            
+        }, 4000);
+
+        // 6s: go to etona.html
+        setTimeout(() => {
+            window.location.href = "etona.html";
+        }, 6000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', cursive;
+            background: linear-gradient(135deg, #ffcce6 0%, #ff99cc 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rain-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .raindrop {
+            position: absolute;
+            font-size: 24px;
+            opacity: 0;
+            animation-name: fall;
+            animation-timing-function: linear;
+            animation-iteration-count: 1;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-50px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        p {
+            position: absolute;
+            font-size: 5rem;
+            font-weight: bold;
+            color: #ff3399;
+            text-shadow: 3px 3px 0 #ffcc00,
+                         6px 6px 15px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            text-align: center;
+            z-index: 2;
+            width: 100%;
+        }
+
+        #text1 {
+            opacity: 1;
+            transform: scale(1);
+            animation: question 3s ease-in-out infinite;
+        }
+
+        @keyframes question {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        #text2 {
+            opacity: 0;
+            transform: scale(0.5);
+            color: #ff3399;
+        }
+
+        .fade-out {
+            opacity: 0 !important;
+            transform: scale(0.5) !important;
+        }
+
+        .fade-in {
+            opacity: 1 !important;
+            transform: scale(1) !important;
+        }
+
+        .bounce {
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="rain-container" id="rain"></div>
+
+    <p id="text1">ang buhay ayyy??</p>
+    <p id="text2" style="display:none;">di karera</p>
+
+    <script>
+        const emojis = ['🤔', '💭', '✨', '🌟', '💫', '⭐', '🎯', '❤️'];
+        const rainContainer = document.getElementById('rain');
+        
+        function createRaindrop() {
+            const drop = document.createElement('div');
+            drop.className = 'raindrop';
+            drop.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            
+            drop.style.left = Math.random() * 100 + 'vw';
+            drop.style.fontSize = (Math.random() * 40 + 30) + 'px';
+            
+            const duration = Math.random() * 3 + 2;
+            drop.style.animationDuration = duration + 's';
+            
+            const delay = Math.random() * 2;
+            drop.style.animationDelay = delay + 's';
+            
+            rainContainer.appendChild(drop);
+            
+            setTimeout(() => {
+                drop.remove();
+            }, (duration + delay) * 1000);
+        }
+        
+        setInterval(createRaindrop, 150);
+
+        // 3s: show "di karera"
+        setTimeout(() => {
+            const text1 = document.getElementById("text1");
+            const text2 = document.getElementById("text2");
+            
+            text1.classList.add('fade-out');
+            
+            setTimeout(() => {
+                text1.style.display = "none";
+                text2.style.display = "block";
+                setTimeout(() => {
+                    text2.classList.add('fade-in');
+                    text2.classList.add('bounce');
+                }, 10);
+            }, 800);
+            
+        }, 5000);
+
+        // 6s: go to etonatalaga.html (3 seconds after showing "di karera")
+        setTimeout(() => {
+            window.location.href = "etonatalaga.html";
+        }, 13000);
+    </script>
+</body>
+</html>
